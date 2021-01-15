@@ -1,36 +1,34 @@
-import { BigInt } from "@graphprotocol/graph-ts"
+import { BigInt, log } from "@graphprotocol/graph-ts";
 import {
-  HumanityGovernance,
   Execute,
-  Propose,
-  RemoveVote,
-  Terminate,
-  Vote
-} from "../generated/HumanityGovernance/HumanityGovernance"
-import { ExampleEntity } from "../generated/schema"
+  Vote,
+} from "../generated/HumanityGovernance/HumanityGovernance";
+import { ExampleEntity, Proposal, GlobalVotes } from "../generated/schema";
+let ZERO = BigInt.fromI32(0)
+let ONE = BigInt.fromI32(1)
 
 export function handleExecute(event: Execute): void {
   // Entities can be loaded from the store using a string ID; this ID
   // needs to be unique across all entities of the same type
-  let entity = ExampleEntity.load(event.transaction.from.toHex())
+  let entity = ExampleEntity.load(event.transaction.from.toHex());
 
   // Entities only exist after they have been saved to the store;
   // `null` checks allow to create entities on demand
   if (entity == null) {
-    entity = new ExampleEntity(event.transaction.from.toHex())
+    entity = new ExampleEntity(event.transaction.from.toHex());
 
     // Entity fields can be set using simple assignments
-    entity.count = BigInt.fromI32(0)
+    entity.count = ZERO
   }
 
   // BigInt and BigDecimal math are supported
-  entity.count = entity.count + BigInt.fromI32(1)
+  entity.count = entity.count.plus(ONE);
 
   // Entity fields can be set based on event parameters
-  entity.proposalId = event.params.proposalId
+  entity.proposalId = event.params.proposalId;
 
   // Entities can be written to the store with `.save()`
-  entity.save()
+  entity.save();
 
   // Note: If a handler doesn't require existing field values, it is faster
   // _not_ to load the entity from the store. Instead, create it fresh with
@@ -65,10 +63,26 @@ export function handleExecute(event: Execute): void {
   // - contract.deposits(...)
 }
 
-export function handlePropose(event: Propose): void {}
+export function handleVote(event: Vote): void {
+  let proposalId = event.params.proposalId.toHex();
+  let proposal = Proposal.load(proposalId);
+  if (proposal == null) {
+    log.critical("handleVote: Proposal with id {} not found", [proposalId]);
+  } else {
+    let globalVotes = getGlobalVotes()
+    globalVotes.counter = globalVotes.counter.plus(ONE)
+    globalVotes.save()
+  }
+}
 
-export function handleRemoveVote(event: RemoveVote): void {}
+function getGlobalVotes(): GlobalVotes {
+  let globalId = '0x0'
+  let globalVotes = GlobalVotes.load(globalId)
 
-export function handleTerminate(event: Terminate): void {}
+  if (globalVotes == null) {
+    globalVotes = new GlobalVotes(globalId)
+    globalVotes.counter = ZERO
+  }
 
-export function handleVote(event: Vote): void {}
+  return globalVotes as GlobalVotes
+}

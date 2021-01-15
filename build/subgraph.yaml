@@ -1,6 +1,6 @@
 specVersion: 0.0.2
 schema:
-  file: ./schema.graphql
+  file: schema.graphql
 dataSources:
   - kind: ethereum/contract
     name: HumanityGovernance
@@ -20,8 +20,8 @@ dataSources:
         - Vote
       abis:
         - name: HumanityGovernance
-          file: ./abis/HumanityGovernance.json
+          file: HumanityGovernance/abis/HumanityGovernance.json
       eventHandlers:
         - event: Vote(indexed uint256,indexed address,bool,uint256)
           handler: handleVote
-      file: ./src/mapping.ts
+      file: HumanityGovernance/HumanityGovernance.wasm
