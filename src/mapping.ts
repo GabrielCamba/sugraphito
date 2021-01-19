@@ -3,7 +3,7 @@ import {
   Execute,
   Vote,
 } from "../generated/HumanityGovernance/HumanityGovernance";
-import { Proposal, GlobalVotes } from "../generated/schema";
+import {  Proposal, GlobalVotes } from "../generated/schema";
 let ZERO = BigInt.fromI32(0)
 let ONE = BigInt.fromI32(1)
 
@@ -67,7 +67,8 @@ export function handleVote(event: Vote): void {
   let proposalId = event.params.proposalId.toHex();
   let proposal = Proposal.load(proposalId);
   if (proposal == null) {
-    log.critical("handleVote: Proposal with id {} not found", [proposalId]);
+    proposal = new Proposal(proposalId)
+    proposal.save()
   } else {
     let globalVotes = getGlobalVotes()
     globalVotes.counter = globalVotes.counter.plus(ONE)
