@@ -41,9 +41,63 @@ export class Proposal extends Entity {
   set id(value: string) {
     this.set("id", Value.fromString(value));
   }
+
+  get votesCounter(): BigInt {
+    let value = this.get("votesCounter");
+    return value.toBigInt();
+  }
+
+  set votesCounter(value: BigInt) {
+    this.set("votesCounter", Value.fromBigInt(value));
+  }
+
+  get weigthCounter(): BigInt {
+    let value = this.get("weigthCounter");
+    return value.toBigInt();
+  }
+
+  set weigthCounter(value: BigInt) {
+    this.set("weigthCounter", Value.fromBigInt(value));
+  }
+
+  get totalYesVotes(): BigInt {
+    let value = this.get("totalYesVotes");
+    return value.toBigInt();
+  }
+
+  set totalYesVotes(value: BigInt) {
+    this.set("totalYesVotes", Value.fromBigInt(value));
+  }
+
+  get totalNoVotes(): BigInt {
+    let value = this.get("totalNoVotes");
+    return value.toBigInt();
+  }
+
+  set totalNoVotes(value: BigInt) {
+    this.set("totalNoVotes", Value.fromBigInt(value));
+  }
+
+  get totalYesWeight(): BigInt {
+    let value = this.get("totalYesWeight");
+    return value.toBigInt();
+  }
+
+  set totalYesWeight(value: BigInt) {
+    this.set("totalYesWeight", Value.fromBigInt(value));
+  }
+
+  get totalNoWeight(): BigInt {
+    let value = this.get("totalNoWeight");
+    return value.toBigInt();
+  }
+
+  set totalNoWeight(value: BigInt) {
+    this.set("totalNoWeight", Value.fromBigInt(value));
+  }
 }
 
-export class GlobalVotes extends Entity {
+export class GlobalVote extends Entity {
   constructor(id: string) {
     super();
     this.set("id", Value.fromString(id));
@@ -51,17 +105,17 @@ export class GlobalVotes extends Entity {
 
   save(): void {
     let id = this.get("id");
-    assert(id !== null, "Cannot save GlobalVotes entity without an ID");
+    assert(id !== null, "Cannot save GlobalVote entity without an ID");
     assert(
       id.kind == ValueKind.STRING,
-      "Cannot save GlobalVotes entity with non-string ID. " +
+      "Cannot save GlobalVote entity with non-string ID. " +
         'Considering using .toHex() to convert the "id" to a string.'
     );
-    store.set("GlobalVotes", id.toString(), this);
+    store.set("GlobalVote", id.toString(), this);
   }
 
-  static load(id: string): GlobalVotes | null {
-    return store.get("GlobalVotes", id) as GlobalVotes | null;
+  static load(id: string): GlobalVote | null {
+    return store.get("GlobalVote", id) as GlobalVote | null;
   }
 
   get id(): string {
@@ -73,12 +127,21 @@ export class GlobalVotes extends Entity {
     this.set("id", Value.fromString(value));
   }
 
-  get counter(): BigInt {
-    let value = this.get("counter");
+  get votesCounter(): BigInt {
+    let value = this.get("votesCounter");
     return value.toBigInt();
   }
 
-  set counter(value: BigInt) {
-    this.set("counter", Value.fromBigInt(value));
+  set votesCounter(value: BigInt) {
+    this.set("votesCounter", Value.fromBigInt(value));
+  }
+
+  get weigthCounter(): BigInt {
+    let value = this.get("weigthCounter");
+    return value.toBigInt();
+  }
+
+  set weigthCounter(value: BigInt) {
+    this.set("weigthCounter", Value.fromBigInt(value));
   }
 }

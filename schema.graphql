@@ -1,8 +1,15 @@
 type Proposal @entity {
   id: ID!
+  votesCounter: BigInt!
+  weigthCounter: BigInt!
+  totalYesVotes: BigInt!
+  totalNoVotes: BigInt!
+  totalYesWeight: BigInt!
+  totalNoWeight: BigInt!
 }
 
-type GlobalVotes @entity {
+type GlobalVote @entity {
   id: ID! 
-  counter: BigInt!
+  votesCounter: BigInt!
+  weigthCounter: BigInt!
 }

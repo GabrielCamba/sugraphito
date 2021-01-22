@@ -3,7 +3,7 @@ import {
   Execute,
   Vote,
 } from "../generated/HumanityGovernance/HumanityGovernance";
-import {  Proposal, GlobalVotes } from "../generated/schema";
+import {  Proposal, GlobalVote } from "../generated/schema";
 let ZERO = BigInt.fromI32(0)
 let ONE = BigInt.fromI32(1)
 
@@ -65,25 +65,49 @@ let ONE = BigInt.fromI32(1)
 
 export function handleVote(event: Vote): void {
   let proposalId = event.params.proposalId.toHex();
-  let proposal = Proposal.load(proposalId);
-  if (proposal == null) {
-    proposal = new Proposal(proposalId)
-    proposal.save()
+  let proposal = getProposal(proposalId)
+  let weight = event.params.weight
+  proposal.votesCounter = proposal.votesCounter.plus(ONE)
+  proposal.weigthCounter = proposal.weigthCounter.plus(weight)
+  if(event.params.approve) {
+    proposal.totalYesVotes = proposal.totalYesVotes.plus(ONE)
+    proposal.totalYesWeight = proposal.totalYesWeight.plus(weight)
   } else {
-    let globalVotes = getGlobalVotes()
-    globalVotes.counter = globalVotes.counter.plus(ONE)
-    globalVotes.save()
+    proposal.totalNoVotes = proposal.totalNoVotes.plus(ONE)
+    proposal.totalNoWeight = proposal.totalNoWeight.plus(weight)
   }
+  let globalVote = getGlobalVote()
+  globalVote.votesCounter = globalVote.votesCounter.plus(ONE)
+  globalVote.weigthCounter = globalVote.weigthCounter.plus(weight)
+  proposal.save()
+  globalVote.save()
 }
 
-function getGlobalVotes(): GlobalVotes {
-  let globalId = '0x0'
-  let globalVotes = GlobalVotes.load(globalId)
+function getProposal(id: string): Proposal {
+  let proposal = Proposal.load(id)
 
-  if (globalVotes == null) {
-    globalVotes = new GlobalVotes(globalId)
-    globalVotes.counter = ZERO
+  if (proposal == null) {
+    proposal = new Proposal(id)
+    proposal.votesCounter = ZERO
+    proposal.weigthCounter = ZERO
+    proposal.totalNoVotes = ZERO
+    proposal.totalNoWeight = ZERO
+    proposal.totalYesVotes = ZERO
+    proposal.totalYesWeight = ZERO
+  } 
+
+  return proposal as Proposal
+}
+
+function getGlobalVote(): GlobalVote {
+  let globalId = '0x0'
+  let globalVote = GlobalVote.load(globalId)
+
+  if (globalVote == null) {
+    globalVote = new GlobalVote(globalId)
+    globalVote.votesCounter = ZERO
+    globalVote.weigthCounter = ZERO
   }
 
-  return globalVotes as GlobalVotes
+  return globalVote as GlobalVote
 }
