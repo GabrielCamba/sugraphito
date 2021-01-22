@@ -57,14 +57,14 @@ Después de dar varias vueltas en el medio pude solucionarlo con la ayuda de Jua
 
 ### Qué aprendí La última semana (Update)
 
-- Pude explorar un poco más del contrato
-- Las queries en plural funcionan pero no se ven reflejadas en el esquema
+- Pude explorar un poco más del contrato y comprender el funcionamiento. Entender por ejemplo que no suma cantidad de votos sino el peso en base al fee.
+- Descubrí que los esquemas escritos en plural funcionan pero no se ven reflejadas en el esquema. Y que se auto generan queries en plural en base a los esquemas en singular
 - Cómo crear nuevas entidades.
 - Los escalares soportados.
 - Pude ahondar en cómo se vinculan el graphql schema, el manifiesto subgraph.yaml y el código en el mapping.
 - Usar el codegen para que construya el esquema y funcione adecuadamente el autocompletado en el mapping.
 - Leer typos al buildear y reconocer la falla.
-- Cómo loguear información
+- Cómo loguear información. Me trabé bastante con un log.critical que me rompía la creación del subgrafo.
 - Los nombres de los parámetros estan definidos en el archivo abi.
 - Como interactuar con una red de pruebas local usando metamask
 - Como vincular metamask con una app
