@@ -51,6 +51,26 @@ En este momento estoy debuggeando este error:
 ```
 Subgraph instance failed to run: Failed to process trigger in block #7728319 (946de2eac7a3274aa3a9e3958ab99e8d9d318ecfd2565758626b3ebf1cede612), transaction f034ec42dde3f251ebafa01c9d6214bd60fb739196ec5a85c3b26ef99aa76e49: Mapping terminated before handling trigger: oneshot canceled, code: SubgraphSyncingFailure, id: QmbnLcRNUMLZyod8meX7yw6bTYNZerfWaXwcotzm1sucLd
 ```
+### Solución del problema anterior
+
+Después de dar varias vueltas en el medio pude solucionarlo con la ayuda de Juanma. El error estaba en hacer un log.critical que rompía y por eso me tiraba el error.
+
+### Qué aprendí La última semana (Update)
+
+- Pude explorar un poco más del contrato
+- Las queries en plural funcionan pero no se ven reflejadas en el esquema
+- Cómo crear nuevas entidades.
+- Los escalares soportados.
+- Pude ahondar en cómo se vinculan el graphql schema, el manifiesto subgraph.yaml y el código en el mapping.
+- Usar el codegen para que construya el esquema y funcione adecuadamente el autocompletado en el mapping.
+- Leer typos al buildear y reconocer la falla.
+- Cómo loguear información
+- Los nombres de los parámetros estan definidos en el archivo abi.
+- Como interactuar con una red de pruebas local usando metamask
+- Como vincular metamask con una app
+- Como escribir un contrato hello world
+- Como deployar un contrato en la red de pruebas usando https://remix.ethereum.org/
+- Como hacer una llamada a una funcion con la herramienta.
 
 
 
